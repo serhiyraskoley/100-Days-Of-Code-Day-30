@@ -1,30 +1,43 @@
-from cgitb import text
-from ctypes import alignment
-from email.mime import image
-from ipaddress import collapse_addresses
 from tkinter import *
-from turtle import left
 from tkinter import messagebox
+from random import randint, choice, shuffle
+
 
 FONT_NAME = "Courier"
 YELLOW = "#f7f5dd"
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+def generate():
+    password_field.delete(0, END)
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#',  '$', '%', '&', '(', ')', '*', '+']
 
+    password_letters = [choice(letters) for _ in range(randint(8, 10))]
+    password_numbers = [choice(numbers) for _ in range(randint(2, 4))]
+    password_symbols = [choice(symbols) for _ in range(randint(2, 4))]
+
+    password_list = password_letters + password_numbers + password_symbols
+
+    shuffle(password_list)
+
+    password = ''.join(password_list)
+
+    password_field.insert(0, password)
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
     website = website_field.get()
     e = email_field.get()
     password = password_field.get()
 
-    if website == '':
+    if website == '' and len(website) == 0:
         messagebox.showwarning(title=f'{website}', message='Please enter website')
         website_field.focus()
-    elif password == '':
+    elif password == '' and len(password) == 0:
         messagebox.showwarning(title=f'{password}', message='Please enter password')
         password_field.focus()
-    elif e == '':
+    elif e == '' and len(e) == 0:
         messagebox.showwarning(title=f'{e}', message='Please enter email')
         email_field.focus()
     else:
@@ -75,8 +88,8 @@ password_field.grid(row=3, column=1, sticky=W) #sticky=W
 
 
 #Buttons
-password_generate = Button(text='Generate Password')
-password_generate.grid(row=3, column=1, sticky=E) 
+password_generate = Button(text='Generate Password', command=generate)
+password_generate.grid(row=3, column=1, sticky=E)
 add = Button(text='Add', width=33, command=save)
 add.grid(row=4, column=1, columnspan=1)
 
