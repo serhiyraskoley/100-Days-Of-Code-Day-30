@@ -2,12 +2,8 @@ from tkinter import *
 from tkinter import messagebox
 from random import randint, choice, shuffle
 
-
-FONT_NAME = "Courier"
-YELLOW = "#f7f5dd"
-
-
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+
 def generate():
     password_field.delete(0, END)
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -26,6 +22,7 @@ def generate():
 
     password_field.insert(0, password)
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+
 def save():
     website = website_field.get()
     e = email_field.get()
@@ -41,7 +38,6 @@ def save():
         messagebox.showwarning(title=f'{e}', message='Please enter email')
         email_field.focus()
     else:
-        # messagebox.showinfo(title='Title', message='Message')
         is_ok = messagebox.askokcancel(title=website, message=f'These are the details entered: \n' 
                                                     f'Email: {e}' 
                                                     f'\nPassword: {password}\n' 
@@ -64,7 +60,6 @@ img = PhotoImage(file='logo.png')
 canvas.create_image(100, 100, image=img)
 canvas.grid(row=0, column=0, columnspan=3) 
 
-
 #Labels
 website_text = Label(text='Website:', padx=3, pady=5)
 website_text.grid(row=1, column=0) #sticky=E 
@@ -84,8 +79,6 @@ email_field.grid(row=2, column=1, columnspan=2, sticky=W)
 email_field.insert(0, 'r.serogka@gmail.com')
 password_field = Entry(width=20, show='*')
 password_field.grid(row=3, column=1, sticky=W) #sticky=W
-
-
 
 #Buttons
 password_generate = Button(text='Generate Password', command=generate)
