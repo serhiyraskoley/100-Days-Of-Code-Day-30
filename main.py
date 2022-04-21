@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from random import randint, choice, shuffle
-
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 def generate():
@@ -38,10 +38,12 @@ def save():
         messagebox.showwarning(title=f'{e}', message='Please enter email')
         email_field.focus()
     else:
-        is_ok = messagebox.askokcancel(title=website, message=f'These are the details entered: \n' 
-                                                    f'Email: {e}' 
-                                                    f'\nPassword: {password}\n' 
-                                                    '\nIs it ok to save?')
+        # is_ok = messagebox.askokcancel(title=website, message=f'These are the details entered: \n'
+        #                                             f'Email: {e}'
+        #                                             f'\nPassword: {password}\n'
+        #                                             '\nIs it ok to save?')
+
+
         if is_ok:
             with open('pass.txt', 'a') as f:
                 f.write(f'{website} | {e} | {password}\n')
@@ -77,7 +79,7 @@ website_field.focus()
 email_field = Entry(width=39)
 email_field.grid(row=2, column=1, columnspan=2, sticky=W)
 email_field.insert(0, 'r.serogka@gmail.com')
-password_field = Entry(width=20, show='*')
+password_field = Entry(width=20) #show='*'
 password_field.grid(row=3, column=1, sticky=W) #sticky=W
 
 #Buttons
