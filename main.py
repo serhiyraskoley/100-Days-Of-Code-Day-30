@@ -46,19 +46,22 @@ def save():
         messagebox.showwarning(title=f'{e}', message='Please enter email')
         email_field.focus()
     else:
-        with open('data.json', 'r') as f:
-                #Reading old data
-                data = json.load(f)
-                print(data)
+            try:
+                with open('data.json', 'r') as f:
+                    #Reading old data
+                    data = json.load(f)                    
+            except FileNotFoundError:
+                with open('data.json', 'w') as f:
+                    #Saving updated data
+                    json.dump(new_data, f, indent=4)
+            else:
                 #Updating new data
                 data.update(new_data)
-        except FileNotFoundError:
-            with open('data.json', 'w') as f:
-                #Saving updated data
-                json.dump(data, f, indent=4)
+                with open('data.json', 'w') as f:
+                    json.dump(data, f, indent=4)
+            finally:
                 website_field.delete(0, END)
                 password_field.delete(0, END)
-
 # ---------------------------- UI SETUP ------------------------------- #
 
 windows = Tk()
