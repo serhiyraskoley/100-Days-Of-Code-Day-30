@@ -3,6 +3,8 @@ from tkinter import messagebox
 from random import randint, choice, shuffle
 import json
 
+from setuptools import find_namespace_packages
+
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 def generate():
@@ -32,33 +34,42 @@ def save():
     new_data = {
         website: {
             "email": e,
-            "password": password,
+            "password": password
         }
     }
 
-    if website == '' and len(website) == 0:
-        messagebox.showwarning(title=f'{website}', message='Please enter website')
-        website_field.focus()
-    elif password == '' and len(password) == 0:
-        messagebox.showwarning(title=f'{password}', message='Please enter password')
-        password_field.focus()
-    elif e == '' and len(e) == 0:
-        messagebox.showwarning(title=f'{e}', message='Please enter email')
-        email_field.focus()
+    if len(website) == 0 or len(password) == 0:
+        messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty!")
     else:
-        with open('data.json', 'r') as f:
-                #Reading old data
-                data = json.load(f)
-                print(data)
-                #Updating new data
-                data.update(new_data)
+        try:
+            with open("data.json", "r") as data_file:
+                data = json.load(data_file)
         except FileNotFoundError:
-            with open('data.json', 'w') as f:
-                #Saving updated data
-                json.dump(data, f, indent=4)
-                website_field.delete(0, END)
-                password_field.delete(0, END)
+            with open("data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+        else:
+            data.update(new_data)
+            with open("data.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
+        finally:
+            website_field.delete(0, END)
+            password_field.delete(0, END)
 
+# ---------------------------- SEARCH  ------------------------------- #
+def search():
+    website = website_field.get()
+    try:
+        with open("data.json") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+            messagebox.showwarning(title="User information", message="No data file find!")
+    else:    
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+            messagebox.showinfo(title="User information", message=f"email: {email}\n password={password}")
+        else:
+            messagebox.showwarning(title="Warning", message="Nothing find!")
 # ---------------------------- UI SETUP ------------------------------- #
 
 windows = Tk()
@@ -82,8 +93,8 @@ test_label = Label()
 test_label.grid(row=6, column=0)
 
 #Fields
-website_field = Entry(width=39)
-website_field.grid(row=1, column=1, columnspan=2, sticky=W)
+website_field = Entry(width=20)
+website_field.grid(row=1, column=1, sticky=W) #columnspan=0
 website_field.focus()
 email_field = Entry(width=39)
 email_field.grid(row=2, column=1, columnspan=2, sticky=W)
@@ -96,5 +107,7 @@ password_generate = Button(text='Generate Password', command=generate)
 password_generate.grid(row=3, column=1, sticky=E)
 add = Button(text='Add', width=33, command=save)
 add.grid(row=4, column=1, columnspan=1)
+search_button = Button(text="Search", width=15, command=search)
+search_button.grid(row=1, column=1, sticky=E)
 
 windows.mainloop()
