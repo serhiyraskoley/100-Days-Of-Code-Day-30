@@ -41,6 +41,7 @@ def save():
     if len(website) == 0 or len(password) == 0:
         messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty!")
     else:
+<<<<<<< HEAD
         try:
             with open("data.json", "r") as data_file:
                 data = json.load(data_file)
@@ -70,6 +71,24 @@ def search():
             messagebox.showinfo(title="User information", message=f"email: {email}\n password={password}")
         else:
             messagebox.showwarning(title="Warning", message="Nothing find!")
+=======
+            try:
+                with open('data.json', 'r') as f:
+                    #Reading old data
+                    data = json.load(f)                    
+            except FileNotFoundError:
+                with open('data.json', 'w') as f:
+                    #Saving updated data
+                    json.dump(new_data, f, indent=4)
+            else:
+                #Updating new data
+                data.update(new_data)
+                with open('data.json', 'w') as f:
+                    json.dump(data, f, indent=4)
+            finally:
+                website_field.delete(0, END)
+                password_field.delete(0, END)
+>>>>>>> e2711a359f702b277da08824932e11123a0badb6
 # ---------------------------- UI SETUP ------------------------------- #
 
 windows = Tk()
